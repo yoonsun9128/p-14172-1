@@ -20,6 +20,7 @@ public class Post extends BaseEntity {
 	private String title;
 	private String content;
 
+	//orphanRemoval -> transactional에 존속되어야 삭제가 가능하다.
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
 	private List<PostComment> comments = new ArrayList<>();
 
