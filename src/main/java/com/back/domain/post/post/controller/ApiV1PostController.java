@@ -4,10 +4,7 @@ import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +19,13 @@ public class ApiV1PostController {
 		List<Post> items = postService.findAll();
 
 		return items;
+	}
+
+	@GetMapping("/{id}")
+	public Post getItem(
+			@PathVariable int id
+	) {
+		Post post = postService.findById(id).get();
+		return post;
 	}
 }
