@@ -3,10 +3,8 @@ package com.back.domain.post.post.controller;
 import com.back.domain.post.post.dto.PostDto;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
-import com.back.global.rsData.ForPostRsData;
 import com.back.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,13 +36,13 @@ public class ApiV1PostController {
 
 	@GetMapping("/{id}/delete")
 	@Transactional
-	public ForPostRsData delete(
+	public RsData delete(
 			@PathVariable int id
 	) {
 		Post post = postService.findById(id).get();
 
 		postService.delete(post);
-		return new ForPostRsData(
+		return new RsData(
 				"200-1",
 				"%d번 글이 삭제되었습니다.".formatted(id),
 				new PostDto(post)
