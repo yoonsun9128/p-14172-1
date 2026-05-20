@@ -5,6 +5,7 @@ import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,17 @@ public class ApiV1PostController {
 			@PathVariable int id
 	) {
 		Post post = postService.findById(id).get();
+		return new PostDto(post);
+	}
+
+	@GetMapping("/{id}/delete")
+	@Transactional
+	public PostDto delete(
+			@PathVariable int id
+	) {
+		Post post = postService.findById(id).get();
+
+		postService.delete(post);
 		return new PostDto(post);
 	}
 }
