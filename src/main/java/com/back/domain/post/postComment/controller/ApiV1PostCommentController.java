@@ -7,10 +7,7 @@ import com.back.domain.post.postComment.entity.PostComment;
 import com.back.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,7 +43,7 @@ public class ApiV1PostCommentController {
 	}
 
 	//개발 편의성을 위해 get방식으로 호
-	@GetMapping("/{id}/delete")
+	@DeleteMapping("/{id}")
 	@Transactional
 	public RsData<Void> delete(
 			@PathVariable int postId,
