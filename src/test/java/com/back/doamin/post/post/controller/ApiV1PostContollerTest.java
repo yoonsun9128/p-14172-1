@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -36,5 +37,7 @@ public class ApiV1PostContollerTest {
 								}
 								""")
 		).andDo(print());
+
+		resultActions.andExpect(status().isCreated());
 	}
 }
