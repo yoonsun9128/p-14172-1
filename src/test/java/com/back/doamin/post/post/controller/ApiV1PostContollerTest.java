@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -34,6 +35,6 @@ public class ApiV1PostContollerTest {
 									"content":"테스트 내용"
 								}
 								""")
-		);
+		).andDo(print());
 	}
 }
