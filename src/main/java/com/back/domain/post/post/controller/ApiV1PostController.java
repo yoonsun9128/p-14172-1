@@ -52,6 +52,7 @@ public class ApiV1PostController {
 				"%d번 글이 삭제되었습니다.".formatted(id)
 		);
 	}
+
 	record PostWriteReqBody(
 			@NotBlank
 			@Size(min = 2, max = 100)
@@ -59,27 +60,26 @@ public class ApiV1PostController {
 			@NotBlank
 			@Size(min = 2, max = 5000)
 			String content
-	) {}
+	) {
+	}
 
 	public record PostWriteResBody(
 			long totalCount,
 			PostDto post
-	) {}
+	) {
+	}
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<RsData<PostWriteResBody>> write(@Valid @RequestBody PostWriteReqBody form) {
+	public RsData<PostWriteResBody> write(@Valid @RequestBody PostWriteReqBody form) {
 		Post post = postService.write(form.title, form.content);
 
 		PostWriteResBody data = new PostWriteResBody(postService.count(), new PostDto(post));
 
-		return new ResponseEntity<>(
-				new RsData<>(
-						"201-1",
-						"%d번 글이 생성되었습니다.".formatted(post.getId()),
-						data
-				),
-				HttpStatus.CREATED
+		return new RsData<>(
+				"201-1",
+				"%d번 글이 생성되었습니다.".formatted(post.getId()),
+				data
 		);
 	}
 
