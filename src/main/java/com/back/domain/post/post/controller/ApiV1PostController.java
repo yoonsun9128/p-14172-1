@@ -83,4 +83,19 @@ public class ApiV1PostController {
 		);
 	}
 
+	@PutMapping("/{id}")
+	@Transactional
+	public RsData<PostWriteResBody> write(
+			@PathVariable int id,
+			@Valid @RequestBody PostWriteReqBody form
+	) {
+		Post post = postService.findById(id).get();
+		postService.modify(post, form.title, form.content);
+
+		return new RsData<>(
+				"200-1",
+				"%d번 글이 수정되었습니다.".formatted(post.getId())
+		);
+	}
+
 }
