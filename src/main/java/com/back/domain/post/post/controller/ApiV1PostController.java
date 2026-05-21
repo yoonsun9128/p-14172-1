@@ -53,7 +53,7 @@ public class ApiV1PostController {
 		);
 	}
 
-	record PostWriteReqBody(
+	public record PostWriteReqBody(
 			@NotBlank
 			@Size(min = 2, max = 100)
 			String title,
