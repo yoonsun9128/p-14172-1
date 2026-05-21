@@ -19,8 +19,11 @@ public class ResponseAspect {
 
 	//룰이 어디에 적용될지 적용
 	@Around("""
+			    execution(public com.back.global.rsData.RsData *(..)) &&
 			    (
-			        within(@org.springframework.web.bind.annotation.RestController *) &&
+			        within(@org.springframework.stereotype.Controller *) ||
+			        within(@org.springframework.web.bind.annotation.RestController *)
+			                        ) &&
 			        (
 			            @annotation(org.springframework.web.bind.annotation.GetMapping) ||
 			            @annotation(org.springframework.web.bind.annotation.PostMapping) ||
@@ -37,11 +40,13 @@ public class ResponseAspect {
 		// 원래 메서드 실행
 		Object proceed = joinPoint.proceed();
 
-		// RsData 타입이면 상태 코드 설정
-		if (proceed instanceof RsData) {
-			RsData<?> rsData = (RsData<?>) proceed;
-			response.setStatus(rsData.statusCode());
-		}
+//		// RsData 타입이면 상태 코드 설정
+//		if (proceed instanceof RsData) {
+//			RsData<?> rsData = (RsData<?>) proceed;
+//			response.setStatus(rsData.statusCode());
+//		}
+		RsData<?> rsData = (RsData<?>) proceed;
+		response.setStatus(rsData.statusCode());
 
 		return proceed;
 	}
