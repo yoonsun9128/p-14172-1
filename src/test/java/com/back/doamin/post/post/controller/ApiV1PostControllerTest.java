@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc //MockMvc 를 자동으로 설정 , postman처럼 요청을 보낼 수 있음
 @Transactional
-public class ApiV1PostContollerTest {
+public class ApiV1PostControllerTest {
 	@Autowired
 	private MockMvc mvc; //mockmvc를 주입받는다. == postman
 	@Autowired
