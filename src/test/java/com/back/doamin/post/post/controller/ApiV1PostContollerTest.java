@@ -3,6 +3,7 @@ package com.back.doamin.post.post.controller;
 import com.back.domain.post.post.controller.ApiV1PostController;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,11 @@ public class ApiV1PostContollerTest {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.resultCode").value("201-1"))
 				.andExpect(jsonPath("$.msg").value("%d번 글이 생성되었습니다.".formatted(post.getId())))
-				.andExpect(jsonPath("$.data.totalCount").value(totalCount))
-				.andExpect(jsonPath("$.data.post.id").value(post.getId()));
+				.andExpect(jsonPath("$.data.id").value(post.getId()))
+				.andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
+				.andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
+				.andExpect(jsonPath("$.data.title").value("테스트 제목"))
+				.andExpect(jsonPath("$.data.content").value("테스트 내용"));
 //				.andExpect(status().isCreated());
 	}
 
