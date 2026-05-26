@@ -114,15 +114,22 @@ public class ApiV1PostContollerTest {
 				get("/api/v1/posts/" + id)
 		).andDo(print());
 
+		Post post = postService.findById(id).get();
+
 		resultActions
 				.andExpect(handler().handlerType(ApiV1PostController.class))
 				.andExpect(handler().methodName("getItem"))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.id").isNumber())
-				.andExpect(jsonPath("$.createDate").isString())
-				.andExpect(jsonPath("$.modifyDate").isString())
-				.andExpect(jsonPath("$.title").isString())
-				.andExpect(jsonPath("$.content").isString());
+				.andExpect(jsonPath("$.id").value(post.getId()))
+				.andExpect(jsonPath("$.createDate").value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
+				.andExpect(jsonPath("$.modifyDate").value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
+				.andExpect(jsonPath("$.title").value(post.getTitle()))
+				.andExpect(jsonPath("$.content").value(post.getContent()));
+//				.andExpect(jsonPath("$.id").isNumber())
+//				.andExpect(jsonPath("$.createDate").isString())
+//				.andExpect(jsonPath("$.modifyDate").isString())
+//				.andExpect(jsonPath("$.title").isString())
+//				.andExpect(jsonPath("$.content").isString());
 	}
 }
 
