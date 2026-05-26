@@ -85,7 +85,7 @@ public class ApiV1PostController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public RsData<PostWriteResBody> write(
+	public RsData<PostWriteResBody> modify(
 			@PathVariable int id,
 			@Valid @RequestBody PostWriteReqBody form
 	) {
