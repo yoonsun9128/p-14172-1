@@ -41,7 +41,7 @@ public class ApiV1PostCommentControllerTest {
 		int postId = 1;
 		int commentTestId = 1;
 		ResultActions resultActions = mvc.perform(
-				get("/api/v1/posts/"+postId+"/comments/"+commentTestId)
+				get("/api/v1/posts/" + postId + "/comments/" + commentTestId)
 		).andDo(print());
 
 		Post post = postService.findById(postId).get();
@@ -95,7 +95,7 @@ public class ApiV1PostCommentControllerTest {
 		int postId = 1;
 		int commentTestId = 1;
 		ResultActions resultActions = mvc.perform(
-				put("/api/v1/posts/"+postId+"/comments/"+commentTestId)
+				put("/api/v1/posts/" + postId + "/comments/" + commentTestId)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content("""
 								{
@@ -117,7 +117,7 @@ public class ApiV1PostCommentControllerTest {
 		int postId = 1;
 		int commentTestId = 1;
 		ResultActions resultActions = mvc.perform(
-				delete("/api/v1/posts/"+postId+"/comments/"+commentTestId)
+				delete("/api/v1/posts/" + postId + "/comments/" + commentTestId)
 		).andDo(print());
 
 		resultActions
@@ -126,5 +126,37 @@ public class ApiV1PostCommentControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.resultCode").value("200-1"))
 				.andExpect(jsonPath("$.msg").value("%d번 댓글이 삭제되었습니다.".formatted(commentTestId)));
+	}
+
+	@Test
+	@DisplayName("댓글 작성")
+	void t5() throws Exception {
+		int postId = 1;
+
+		ResultActions resultActions = mvc
+				.perform(
+						post("/api/v1/posts/%d/comments".formatted(postId))
+								.contentType(MediaType.APPLICATION_JSON)
+								.content("""
+										{
+										    "content": "내용"
+										}
+										""")
+				)
+				.andDo(print());
+
+		Post post = postService.findById(postId).get();
+		PostComment postComment = post.getComments().getLast();
+
+		resultActions
+				.andExpect(handler().handlerType(ApiV1PostCommentController.class))
+				.andExpect(handler().methodName("write"))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.resultCode").value("201-1"))
+				.andExpect(jsonPath("$.msg").value("%d번 댓글이 작성되었습니다.".formatted(postComment.getId())))
+				.andExpect(jsonPath("$.data.id").value(postComment.getId()))
+				.andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(postComment.getCreateDate().toString().substring(0, 20))))
+				.andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(postComment.getModifyDate().toString().substring(0, 20))))
+				.andExpect(jsonPath("$.data.content").value("내용"));
 	}
 }
