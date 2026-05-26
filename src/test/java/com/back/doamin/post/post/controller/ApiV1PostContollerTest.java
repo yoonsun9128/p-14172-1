@@ -157,7 +157,9 @@ public class ApiV1PostContollerTest {
 					.andExpect(jsonPath("$[%d].createDate".formatted(i)).value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
 					.andExpect(jsonPath("$[%d].modifyDate".formatted(i)).value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
 					.andExpect(jsonPath("$[%d].title".formatted(i)).value(post.getTitle()))
-					.andExpect(jsonPath("$[%d].content".formatted(i)).value(post.getContent()));
+					.andExpect(jsonPath("$[%d].content".formatted(i)).value(post.getContent()))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.length()").value(posts.size()));
 		}
 	}
 }
