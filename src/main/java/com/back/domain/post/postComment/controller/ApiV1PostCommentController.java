@@ -84,12 +84,13 @@ public class ApiV1PostCommentController {
 	public RsData<PostCommentDto> modifyPostComment(
 			@PathVariable int postId,
 			@PathVariable int id,
-			@Valid @RequestBody PostCommentForm form
+			@Valid @RequestBody PostCommentForm form,
+			@RequestParam(value = "actorId") int memberId
 	) {
 		Post post = postService.findById(postId).get();
 		PostComment postComment = post.findCommentById(id).get();
 
-		postService.modifyComment(postComment, form.content());
+		postService.modifyComment(postComment, form.content(), memberId);
 
 		return new RsData<>(
 				"200-1",

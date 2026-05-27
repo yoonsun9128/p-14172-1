@@ -65,7 +65,7 @@ public class PostService {
 	public boolean deleteComment(Post post, PostComment postComment, int id) {
 		memberRepository.findById(id).ifPresent(
 				a -> {
-					if (a.getId() != post.getAuthor().getId()) {
+					if (a.getId() != postComment.getAuthor().getId()) {
 						throw new RuntimeException("작성자가 달라 삭제가 불가능합니다.");
 					}
 				}
@@ -73,7 +73,14 @@ public class PostService {
 		return post.deleteComment(postComment);
 	}
 
-	public void modifyComment(PostComment postComment, String content) {
+	public void modifyComment(PostComment postComment, String content, int id) {
+		memberRepository.findById(id).ifPresent(
+				a -> {
+					if (a.getId() != postComment.getAuthor().getId()) {
+						throw new RuntimeException("작성자가 달라 삭제가 불가능합니다.");
+					}
+				}
+		);
 		postComment.modify(content);
 	}
 
