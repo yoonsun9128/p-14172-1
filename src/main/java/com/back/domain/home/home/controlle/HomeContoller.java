@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.InetAddress;
 
+import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
+
 @RestController
 public class HomeContoller {
 	@SneakyThrows
-	@GetMapping
+	@GetMapping(produces = TEXT_HTML_VALUE)
 	public String main() {
 		InetAddress localHost = InetAddress.getLocalHost();
 
