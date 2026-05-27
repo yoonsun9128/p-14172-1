@@ -21,8 +21,6 @@ public class MemberService {
 		memberRepository.findByUsername(username)
 				.ifPresent(a -> {
 					throw new MemberDuplicateUsernameException(username);
-
-
 				});
 
 		Member member = new Member(username, password, name);

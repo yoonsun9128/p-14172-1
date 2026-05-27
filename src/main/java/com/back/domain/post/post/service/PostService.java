@@ -23,7 +23,9 @@ public class PostService {
 	}
 
 	public Post write(String title, String content, int id) {
-		Member member = memberRepository.findById(id).get();
+		System.out.println("test!!!!!id" + id);
+		Member member = memberRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
 		Post post = new Post(title, content, member);
 
 		return postRepository.save(post);

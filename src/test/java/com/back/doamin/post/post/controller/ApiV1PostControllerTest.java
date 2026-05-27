@@ -68,6 +68,25 @@ public class ApiV1PostControllerTest {
 	}
 
 	@Test
+	@DisplayName("글 쓰기, without author")
+	void t8() throws Exception {
+		ResultActions resultActions = mvc.perform(
+				post("/api/v1/posts")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("""
+								{
+									"title":"테스트 제목",
+									"content":"테스트 내용"
+								}
+								""")
+		).andDo(print());
+		resultActions
+				.andExpect(handler().handlerType(ApiV1PostController.class))
+				.andExpect(handler().methodName("write"))
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
 	@DisplayName("글 쓰기, without title")
 	void t7() throws Exception {
 		ResultActions resultActions = mvc
