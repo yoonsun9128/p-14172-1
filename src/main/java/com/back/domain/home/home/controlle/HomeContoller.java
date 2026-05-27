@@ -46,4 +46,26 @@ public class HomeContoller {
 				.pathsToExclude("/api/**")
 				.build();
 	}
+
+	@GetMapping(value = "/test/fetchPosts", produces = TEXT_HTML_VALUE)
+	@Operation(summary = "fetchPosts 테스트")
+	public String testFetchPosts() {
+		return """
+				<script>
+				console.clear();
+				
+				fetch("/api/v1/posts")
+				  .then(response => response.json())
+				  .then(data => {
+				    console.log(data);
+				    console.log(data[0].title);
+				  });
+				 fetch(/api/v1/posts/1")
+				       .then(response => response.json())
+				       .then(data => {
+				         console.log(data);
+				       });
+				</script>
+				""";
+	}
 }
