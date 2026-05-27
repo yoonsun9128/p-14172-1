@@ -11,10 +11,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/members")
@@ -48,5 +45,14 @@ public class ApiV1MemberController {
 				"%d번 사용자가 생성되었습니다.".formatted(newMember.getId()),
 				new MemberDto(newMember)
 		);
+	}
+
+	@GetMapping("/me")
+	@Operation(summary = "내 정보 조회")
+	public MemberDto getMemberInfo(
+			@RequestParam(value = "actorId") int id
+	) {
+		Member member = memberService.findById(id).get();
+		return new MemberDto(member);
 	}
 }

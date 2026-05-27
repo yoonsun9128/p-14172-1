@@ -30,6 +30,11 @@ public class MemberService {
 	}
 
 	public Optional<Member> findLastTet() {
+
 		return memberRepository.findFirstByOrderByIdDesc();
+	}
+
+	public Optional<Member> findById(int id) {
+		return memberRepository.findById(id);
 	}
 }
