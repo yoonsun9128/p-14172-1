@@ -36,8 +36,9 @@ public class ApiV1PostControllerTest {
 	@Test
 	@DisplayName("글 쓰기")
 	void t1() throws Exception {
+		int memberId = 3;
 		ResultActions resultActions = mvc.perform(
-				post("/api/v1/posts")
+				post("/api/v1/posts?actorId=" + memberId)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content("""
 								{
@@ -58,6 +59,7 @@ public class ApiV1PostControllerTest {
 				.andExpect(jsonPath("$.resultCode").value("201-1"))
 				.andExpect(jsonPath("$.msg").value("%d번 글이 생성되었습니다.".formatted(post.getId())))
 				.andExpect(jsonPath("$.data.id").value(post.getId()))
+				.andExpect(jsonPath("$.data.authorId").value(post.getAuthor().getId()))
 				.andExpect(jsonPath("$.data.createDate").value(Matchers.startsWith(post.getCreateDate().toString().substring(0, 20))))
 				.andExpect(jsonPath("$.data.modifyDate").value(Matchers.startsWith(post.getModifyDate().toString().substring(0, 20))))
 				.andExpect(jsonPath("$.data.title").value("테스트 제목"))
