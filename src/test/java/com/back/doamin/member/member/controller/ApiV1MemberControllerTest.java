@@ -55,4 +55,10 @@ public class ApiV1MemberControllerTest {
 				.andExpect(jsonPath("$.data.username").value("user"))
 				.andExpect(jsonPath("$.data.name").value("azalea"));
 	}
+
+	@Test
+	@DisplayName("회원 중복 에러")
+	void t2() throws Exception {
+
+	}
 }
