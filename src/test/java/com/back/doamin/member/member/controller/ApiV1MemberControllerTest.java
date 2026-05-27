@@ -77,4 +77,23 @@ public class ApiV1MemberControllerTest {
 				.andExpect(status().isConflict())
 				.andExpect(jsonPath("$.resultCode").value("409-1"));
 	}
+
+	@Test
+	@DisplayName("회원 조회")
+	void t3() throws Exception {
+		int id = 3;
+		ResultActions resultActions = mvc.perform(
+				get("/api/v1/members/me?actorId=" + id)
+		).andDo(print());
+
+		Member member = memberService.findById(id).get();
+
+		resultActions
+				.andExpect(handler().handlerType(ApiV1MemberController.class))
+				.andExpect(handler().methodName("getMemberInfo"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(member.getId()))
+				.andExpect(jsonPath("$.username").value("user1"))
+				.andExpect(jsonPath("$.name").value("유저1"));
+	}
 }
