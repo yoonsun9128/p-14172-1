@@ -37,7 +37,20 @@ public class PostService {
 		return postRepository.findAll();
 	}
 
-	public void modify(Post post, String title, String content) {
+	public void modify(Post post, String title, String content, int id) {
+//		Member member = memberRepository.findById(id)
+//				.orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+//
+//		if (member.getId() != post.getAuthor().getId()) {
+//			throw new RuntimeException("작성자가 달라 수정이 불가능합니다.");
+//		}
+		memberRepository.findById(id).ifPresent(
+				a -> {
+					if (a.getId() != post.getAuthor().getId()) {
+						throw new RuntimeException("작성자가 달라 수정이 불가능합니다.");
+					}
+				}
+		);
 		post.modify(title, content);
 	}
 

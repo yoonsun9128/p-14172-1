@@ -96,10 +96,11 @@ public class ApiV1PostController {
 	@Operation(summary = "수정")
 	public RsData<PostWriteResBody> modify(
 			@PathVariable int id,
-			@Valid @RequestBody PostWriteReqBody form
+			@Valid @RequestBody PostWriteReqBody form,
+			@RequestParam(value = "actorId") int memberId
 	) {
 		Post post = postService.findById(id).get();
-		postService.modify(post, form.title, form.content);
+		postService.modify(post, form.title, form.content, memberId);
 
 		return new RsData<>(
 				"200-1",
