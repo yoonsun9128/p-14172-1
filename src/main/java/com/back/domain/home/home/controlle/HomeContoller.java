@@ -60,7 +60,7 @@ public class HomeContoller {
 				    console.log(data);
 				    console.log(data[0].title);
 				  });
-				 fetch(/api/v1/posts/1")
+				 fetch("/api/v1/posts/1")
 				       .then(response => response.json())
 				       .then(data => {
 				         console.log(data);
