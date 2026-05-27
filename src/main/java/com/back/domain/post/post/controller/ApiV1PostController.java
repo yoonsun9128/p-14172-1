@@ -48,11 +48,12 @@ public class ApiV1PostController {
 	@Transactional
 	@Operation(summary = "삭제")
 	public RsData<Void> delete(
-			@PathVariable int id
+			@PathVariable int id,
+			@RequestParam(value = "actorId") int memberId
 	) {
 		Post post = postService.findById(id).get();
 
-		postService.delete(post);
+		postService.delete(post, memberId);
 		return new RsData<>(
 				"200-1",
 				"%d번 글이 삭제되었습니다.".formatted(id)

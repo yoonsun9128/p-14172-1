@@ -1,6 +1,7 @@
 package com.back.domain.post.post.service;
 
 import com.back.domain.member.member.entity.Member;
+import com.back.domain.member.member.repository.MemberRepository;
 import com.back.domain.member.member.service.MemberService;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.repository.PostRepository;
@@ -15,14 +16,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
 	private final PostRepository postRepository;
-	private final MemberService memberService;
+	private final MemberRepository memberRepository;
 
 	public long count() {
 		return postRepository.count();
 	}
 
 	public Post write(String title, String content, int id) {
-		Member member = memberService.findById(id).get();
+		Member member = memberRepository.findById(id).get();
 		Post post = new Post(title, content, member);
 
 		return postRepository.save(post);
@@ -41,7 +42,7 @@ public class PostService {
 	}
 
 	public PostComment writeComment(Post post, String content, int id) {
-		Member member = memberService.findById(id).get();
+		Member member = memberRepository.findById(id).get();
 		return post.addComment(content, member);
 	}
 
@@ -53,7 +54,14 @@ public class PostService {
 		postComment.modify(content);
 	}
 
-	public void delete(Post post) {
+	public void delete(Post post, int id) {
+		memberRepository.findById(id).ifPresent(
+				a -> {
+					if (a.getId() != post.getAuthor().getId()) {
+						throw new RuntimeException("작성자가 달라 삭제가 불가능합니다.");
+					}
+				}
+		);
 		postRepository.delete(post);
 	}
 
