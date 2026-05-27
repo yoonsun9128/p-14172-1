@@ -24,7 +24,6 @@ public class PostService {
 	}
 
 	public Post write(String title, String content, int id) {
-		System.out.println("test!!!!!id" + id);
 		Member member = memberRepository.findById(id)
 				.orElseThrow(MemberUnexistException::new);
 		Post post = new Post(title, content, member);
@@ -58,11 +57,19 @@ public class PostService {
 	}
 
 	public PostComment writeComment(Post post, String content, int id) {
-		Member member = memberRepository.findById(id).get();
+		Member member = memberRepository.findById(id)
+				.orElseThrow(MemberUnexistException::new);
 		return post.addComment(content, member);
 	}
 
-	public boolean deleteComment(Post post, PostComment postComment) {
+	public boolean deleteComment(Post post, PostComment postComment, int id) {
+		memberRepository.findById(id).ifPresent(
+				a -> {
+					if (a.getId() != post.getAuthor().getId()) {
+						throw new RuntimeException("작성자가 달라 삭제가 불가능합니다.");
+					}
+				}
+		);
 		return post.deleteComment(postComment);
 	}
 

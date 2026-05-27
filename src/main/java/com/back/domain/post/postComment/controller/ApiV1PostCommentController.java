@@ -58,12 +58,13 @@ public class ApiV1PostCommentController {
 	@Operation(summary = "삭제")
 	public RsData<Void> delete(
 			@PathVariable int postId,
-			@PathVariable int id
+			@PathVariable int id,
+			@RequestParam(value = "actorId") int memberId
 	) {
 		Post post = postService.findById(postId).get();
 		PostComment postComment = post.findCommentById(id).get();
 
-		postService.deleteComment(post, postComment);
+		postService.deleteComment(post, postComment, memberId);
 
 		return new RsData<>(
 				"200-1",
