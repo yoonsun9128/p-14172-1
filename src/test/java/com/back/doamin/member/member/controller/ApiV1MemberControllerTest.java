@@ -59,6 +59,22 @@ public class ApiV1MemberControllerTest {
 	@Test
 	@DisplayName("회원 중복 에러")
 	void t2() throws Exception {
+		ResultActions resultActions = mvc.perform(
+				post("/api/v1/members/join")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("""
+								{
+								    "username" : "user1",
+								    "password" : "1234",
+								    "name" : "유저1"
+								}
+								""")
+		).andDo(print());
 
+		resultActions
+				.andExpect(handler().handlerType(ApiV1MemberController.class))
+				.andExpect(handler().methodName("write"))
+				.andExpect(status().isConflict())
+				.andExpect(jsonPath("$.resultCode").value("409-1"));
 	}
 }
