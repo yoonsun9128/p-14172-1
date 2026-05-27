@@ -5,6 +5,8 @@ import com.back.domain.member.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -17,5 +19,9 @@ public class MemberService {
 	public Member write(String username, String password, String name) {
 		Member member = new Member(username, password, name);
 		return memberRepository.save(member);
+	}
+
+	public Optional<Member> findLastTet() {
+		return memberRepository.findFirstByOrderByIdDesc();
 	}
 }
