@@ -6,6 +6,7 @@ import com.back.domain.member.member.service.MemberService;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.repository.PostRepository;
 import com.back.domain.post.postComment.entity.PostComment;
+import com.back.global.globalExceptionHandler.MemberUnexistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class PostService {
 	public Post write(String title, String content, int id) {
 		System.out.println("test!!!!!id" + id);
 		Member member = memberRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+				.orElseThrow(MemberUnexistException::new);
 		Post post = new Post(title, content, member);
 
 		return postRepository.save(post);

@@ -68,4 +68,15 @@ public class GlobalExceptionHandler {
 				CONFLICT
 		);
 	}
+
+	@ExceptionHandler(MemberUnexistException.class)
+	public ResponseEntity<RsData<Void>> handle(MemberUnexistException ex) {
+		return new ResponseEntity<>(
+				new RsData<>(
+						"404-1",
+						ex.getMessage()
+				),
+				NOT_FOUND
+		);
+	}
 }

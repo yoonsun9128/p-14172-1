@@ -87,6 +87,28 @@ public class ApiV1PostControllerTest {
 	}
 
 	@Test
+	@DisplayName("글 쓰기, 등록된 작성자가 없을 경우")
+	void t10() throws Exception {
+		int memberId = 999;
+		ResultActions resultActions = mvc.perform(
+				post("/api/v1/posts?actorId=" + memberId)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content("""
+								{
+									"title":"테스트 제목",
+									"content":"테스트 내용"
+								}
+								""")
+		).andDo(print());
+		resultActions
+				.andExpect(handler().handlerType(ApiV1PostController.class))
+				.andExpect(handler().methodName("write"))
+				.andExpect(jsonPath("$.resultCode").value("404-1"))
+				.andExpect(jsonPath("$.msg").value("존재하지 않는 회원입니다."))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
 	@DisplayName("글 쓰기, without title")
 	void t7() throws Exception {
 		ResultActions resultActions = mvc
