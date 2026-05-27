@@ -78,8 +78,8 @@ public class ApiV1PostController {
 	@PostMapping
 	@Transactional
 	@Operation(summary = "작성")
-	public RsData<PostDto> write(@Valid @RequestBody PostWriteReqBody form) {
-		Post post = postService.write(form.title, form.content);
+	public RsData<PostDto> write(@Valid @RequestBody PostWriteReqBody form, @RequestParam(value = "actorId") int id) {
+		Post post = postService.write(form.title, form.content, id);
 
 //		PostWriteResBody data = new PostWriteResBody(postService.count(), new PostDto(post));
 

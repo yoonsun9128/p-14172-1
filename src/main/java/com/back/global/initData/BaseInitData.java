@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.annotation.Order;
 import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
@@ -24,8 +25,8 @@ public class BaseInitData {
 	@Bean
 	ApplicationRunner baseInitDataApplicationRunner() {
 		return args -> {
-			self.work1();
 			self.work2();
+			self.work1();
 		};
 	}
 
@@ -33,15 +34,15 @@ public class BaseInitData {
 	public void work1() {
 		if (postService.count() > 0) return;
 
-		Post post1 = postService.write("제목 1", "내용 1");
-		Post post2 = postService.write("제목 2", "내용 2");
-		Post post3 = postService.write("제목 3", "내용 3");
+		Post post1 = postService.write("제목 1", "내용 1", 3);
+		Post post2 = postService.write("제목 2", "내용 2", 4);
+		Post post3 = postService.write("제목 3", "내용 3",5);
 
-		post1.addComment("댓글 1-1");
-		post1.addComment("댓글 1-2");
-		post1.addComment("댓글 1-3");
-		post2.addComment("댓글 2-1");
-		post2.addComment("댓글 2-2");
+		postService.writeComment(post1, "댓글 1-1",3);
+		postService.writeComment(post1, "댓글 1-2",4);
+		postService.writeComment(post1, "댓글 1-3",5);
+		postService.writeComment(post2,"댓글 2-1",3);
+		postService.writeComment(post2, "댓글 2-2",4);
 	}
 
 	@Transactional

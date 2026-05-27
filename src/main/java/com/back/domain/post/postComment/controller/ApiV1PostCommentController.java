@@ -109,11 +109,12 @@ public class ApiV1PostCommentController {
 	@Operation(summary = "작성")
 	public RsData<PostCommentDto> write(
 			@PathVariable int postId,
-			@Valid @RequestBody PostCommentWriteReqBody reqBody
+			@Valid @RequestBody PostCommentWriteReqBody reqBody,
+			@RequestParam(value = "actorId") int id
 	) {
 		Post post = postService.findById(postId).get();
 
-		PostComment postComment = postService.writeComment(post, reqBody.content);
+		PostComment postComment = postService.writeComment(post, reqBody.content, id);
 		postService.flush(); //수동으로 flush 넣음
 		return new RsData<>(
 				"201-1",
