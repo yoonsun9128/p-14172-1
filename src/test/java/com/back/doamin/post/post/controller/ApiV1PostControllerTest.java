@@ -111,16 +111,17 @@ public class ApiV1PostControllerTest {
 	@Test
 	@DisplayName("글 쓰기, without title")
 	void t7() throws Exception {
+		int memberId = 3;
 		ResultActions resultActions = mvc
 				.perform(
-						post("/api/v1/posts")
+						post("/api/v1/posts?actorId=" + memberId)
 								.contentType(MediaType.APPLICATION_JSON)
 								.content("""
-                                        {
-                                            "title": "",
-                                            "content": "내용"
-                                        }
-                                        """)
+										{
+										    "title": "",
+										    "content": "내용"
+										}
+										""")
 				)
 				.andDo(print());
 
@@ -130,24 +131,24 @@ public class ApiV1PostControllerTest {
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.resultCode").value("400-1"))
 				.andExpect(jsonPath("$.msg").value("""
-                        title-NotBlank-must not be blank
-                        title-Size-size must be between 2 and 100
-                        """.stripIndent().trim()));
+						title-NotBlank-must not be blank
+						title-Size-size must be between 2 and 100
+						""".stripIndent().trim()));
 	}
 
 	@Test
 	@DisplayName("글 쓰기, with wrong json syntax")
 	void t9() throws Exception {
-
+		int memberId = 3;
 		String wrongJsonBody = """
-                {
-                    "title": 제목",
-                    content": "내용"
-                """;
+				{
+				    "title": 제목",
+				    content": "내용"
+				""";
 
 		ResultActions resultActions = mvc
 				.perform(
-						post("/api/v1/posts")
+						post("/api/v1/posts?actorId=" + memberId)
 								.contentType(MediaType.APPLICATION_JSON)
 								.content(wrongJsonBody)
 				)
